@@ -1,0 +1,3 @@
+export const INIT_CASOS = 'INIT_CASOS';
+export const PRESENTAR_CASOS = 'PRESENTAR_CASOS';
+export const VALIDAR_CASO = 'VALIDAR_CASO';
