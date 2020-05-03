@@ -2,17 +2,37 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import NavDropdown from 'react-bootstrap/NavDropdown'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
+import SwitchLang from './SwitchLang'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { logout } from '../store/usuarios/actions';
+import translate from '../utils/traducciones';
 
 class Header extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      filterTxt: ''
+    }
     this.logout = this.logout.bind(this);
+    this.handleChangeFilter = this.handleChangeFilter.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChangeFilter(e) {
+    this.setState({
+      filterTxt: e.target.value
+    })
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const url = this.state.filterTxt ? `/destacados?filter=${this.state.filterTxt}` : '/destacados';
+    this.props.history.push(url)
   }
 
   logout() {
@@ -24,10 +44,10 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar variant="light" style={{backgroundColor: 'white'}}>
+      <Navbar style={{backgroundColor: 'black', borderBottom: '2px solid #0bffae', marginBottom: '2rem'}}>
         <Navbar.Brand className="mr-auto brand" as={Link} to="/">
-          <img
-            src="/images/logo.png"
+          <img style={{width: "400px"}}
+            src="/images/dark-logo.png"
             className="d-inline-block align-top"
             alt="Logo Legal Crowd"
           />
@@ -38,21 +58,21 @@ class Header extends Component {
             null
           :
             (
-              <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-4" />
-                <Button variant="outline-info">Search</Button>
+              <Form inline onSubmit={this.handleSubmit}>
+                <FormControl type="text" placeholder={translate('buscar', this.props.lang)} className="mr-sm-4" value={this.state.filterTxt} onChange={this.handleChangeFilter} />
+                <Button as={Link} to={{pathname: '/destacados', search: this.state.filterTxt ? `?filter=${this.state.filterTxt}` : ''}} variant="outline-light">{translate('buscar', this.props.lang)}</Button>
               </Form>
             )
         }
         <Nav className="ml-auto">
-          <Nav.Link as={Link} to="/">Inicio</Nav.Link>
+          <Button variant="outline-light" as={Link} to="/">{translate('inicio', this.props.lang)}</Button>
           {
             this.props.usuario && this.props.usuario.tipo == 11
             ?
               (
                 <React.Fragment>
-                  <Nav.Link as={Link} to="/casos-por-revisar">Casos pendientes</Nav.Link>
-                  <Nav.Link as={Link} to="/crear-asunto">Nuevo asunto</Nav.Link>
+                  <Button variant="outline-light" as={Link} to="/casos-por-revisar">{translate('casos_pendientes_de_revision', this.props.lang)}</Button>
+                  <Button variant="outline-light" as={Link} to="/crear-asunto">{translate('nuevo_caso', this.props.lang)}</Button>
                 </React.Fragment>
               )
             :
@@ -61,7 +81,11 @@ class Header extends Component {
           {
             this.props.usuario && this.props.usuario.tipo == 0
             ?
-              <Nav.Link as={Link} to="/presentar-caso">Presentar caso</Nav.Link>
+              (
+                <React.Fragment>
+                  <Button variant="outline-light" as={Link} to="/presentar-caso">{translate('presentar_caso', this.props.lang)}</Button>
+                </React.Fragment>
+              )
             :
               null
           }
@@ -70,13 +94,17 @@ class Header extends Component {
             ?
               (
                 <React.Fragment>
-                  <Nav.Link as={Link} to="/">{this.props.usuario.nombre}</Nav.Link>
-                  <Button variant="link" onClick={this.logout}>Logout</Button>
+                  <NavDropdown variant="outline-light" as={Link} title={this.props.usuario.nombre} id="basic-nav-dropdown">
+                    <NavDropdown.Item as={Link} to={`/usuario/${this.props.usuario.id}/inversiones`}>{translate('mis_inversiones', this.props.lang)}</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item variant="outline-light" onClick={this.logout}>Logout</NavDropdown.Item>
+                  </NavDropdown>
                 </React.Fragment>
               )
             :
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <Button variant="outline-light" as={Link} to="/login">Login</Button>
           }
+          <SwitchLang />
         </Nav>
       </Navbar>
     )
@@ -85,7 +113,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    usuario: state.usuariosReducer.usuario
+    usuario: state.usuariosReducer.usuario,
+    lang: state.langReducer.selected.code
   }
 }
 

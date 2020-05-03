@@ -1,26 +1,28 @@
+import translate from '../../utils/traducciones';
+
 export default [
   {
     id: 1,
-    nombre: 'Civil'
+    nombre: 'civil'
   },
   {
     id: 2,
-    nombre: 'Administrativo'
+    nombre: 'administrativo'
   },
   {
     id: 3,
-    nombre: 'Ambiental'
+    nombre: 'medioambiental'
   },
   {
     id: 4,
-    nombre: 'Bancario'
+    nombre: 'bancario'
   },
   {
     id: 5,
-    nombre: 'Mercantil'
+    nombre: 'mercantil'
   },
   {
     id: 6,
-    nombre: 'Laboral'
+    nombre: 'laboral'
   }
 ];

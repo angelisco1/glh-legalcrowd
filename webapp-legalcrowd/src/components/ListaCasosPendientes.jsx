@@ -3,9 +3,12 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { validarCaso } from '../store/casos-presentados/actions';
+import { withUser } from './withUser';
+import { validarCaso, downloadFile } from '../store/casos-presentados/actions';
+import translate from '../utils/traducciones';
 
 class ListaCasosPendientes extends Component {
   constructor(props) {
@@ -23,12 +26,20 @@ class ListaCasosPendientes extends Component {
   render() {
     let casos = this.props.casos;
     const listaCasos = casos.map(c => {
+      const listaArchivosDescargables = c.archivos.map(a => {
+        return <ListGroup.Item key={a.fullPath} variant="dark" action href={a.downloadUrl}>{a.name}</ListGroup.Item>
+      })
       return (
         <Col md="12" key={c.id}>
-          <Card>
+          <Card bg="dark">
             <Card.Body>
               <Card.Text>{c.exposicion}</Card.Text>
-              <Button onClick={() => this.handleValidar(c.id)}>Validar</Button>
+            </Card.Body>
+            <ListGroup variant="dark">
+              {listaArchivosDescargables}
+            </ListGroup>
+            <Card.Body>
+              <Button variant="outline-light" onClick={() => this.handleValidar(c.id)}>{translate('validar', this.props.lang)}</Button>
             </Card.Body>
           </Card>
         </Col>
@@ -44,12 +55,15 @@ class ListaCasosPendientes extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    casos: state.casosReducer.casos
+    casos: state.casosReducer.casos,
+    usuario: state.usuariosReducer.usuario,
+    lang: state.langReducer.selected.code
   }
 }
 
 const mapDispatchToProps = {
-  validarCaso
+  validarCaso,
+  downloadFile
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListaCasosPendientes));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withUser(ListaCasosPendientes)));

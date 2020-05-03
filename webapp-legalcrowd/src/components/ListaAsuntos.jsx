@@ -12,9 +12,14 @@ class ListaAsuntos extends Component {
 
   render() {
     const ramaId = this.props.match.params.categoria;
+    const queryParams = this.props.location.search;
     let asuntos = this.props.asuntos;
     if (ramaId) {
       asuntos = asuntos.filter(a => a.ramaId == ramaId);
+    }
+    if (queryParams) {
+      const filter = queryParams.split('=')[1];
+      asuntos = asuntos.filter(a => a.nombre.toLowerCase().includes(filter.toLowerCase()))
     }
     const listaAsuntos = asuntos.map(a => {
       return (

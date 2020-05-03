@@ -20,16 +20,6 @@ function removeCaso(state, id) {
   return newState;
 }
 
-// function updateAsunto(state, asunto) {
-//   const nuevosAsuntos = state.asuntos.map(a => {
-//     if (a.id == asunto.id) {
-//       return asunto;
-//     }
-//     return a;
-//   })
-//   return {asuntos: nuevosAsuntos};
-// }
-
 
 export default function casos(state=initialState, action) {
   switch(action.type) {

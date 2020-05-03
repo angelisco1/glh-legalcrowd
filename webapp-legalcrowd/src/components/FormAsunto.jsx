@@ -5,9 +5,10 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import { connect } from 'react-redux';
 import { guardarAsunto } from '../store/asuntos/actions';
+import { withUser } from './withUser';
+import translate from '../utils/traducciones';
 
 class FormAsunto extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -49,17 +50,17 @@ class FormAsunto extends Component {
     })
     return (
       <Container>
-        <h2>Nuevo asunto</h2>
+        <h2>{translate('nuevo_caso', this.props.lang)}</h2>
         <br />
         <Form onSubmit={this.handleSubmit}>
           <Form.Row>
             <Form.Group as={Col} md="8" controlId="formNombre">
-              <Form.Label>Nombre del asunto</Form.Label>
-              <Form.Control type="text" placeholder="Introduce nombre" name="nombre" value={nombre} onChange={this.handleChangeField} />
+              <Form.Label>{translate('titulo', this.props.lang)}</Form.Label>
+              <Form.Control type="text" name="nombre" value={nombre} onChange={this.handleChangeField} />
             </Form.Group>
 
             <Form.Group as={Col} md="4" controlId="exampleForm.ControlSelect2">
-              <Form.Label>Rama del derecho</Form.Label>
+              <Form.Label>{translate('area_legal', this.props.lang)}</Form.Label>
               <Form.Control as="select" name="ramaId" value={ramaId} onChange={this.handleChangeField}>
                 {ramasOptions}
               </Form.Control>
@@ -68,48 +69,48 @@ class FormAsunto extends Component {
 
           <Form.Row>
             <Form.Group as={Col} md="3" controlId="formPorcentaje">
-              <Form.Label>Valoración del riesgo</Form.Label>
-              <Form.Control type="number" placeholder="Introduce la valoración del riesgo" name="valRiesgo" value={valRiesgo} onChange={this.handleChangeField} />
+              <Form.Label>{translate('valoracion_del_riesgo', this.props.lang)}</Form.Label>
+              <Form.Control type="number" name="valRiesgo" value={valRiesgo} onChange={this.handleChangeField} />
               <Form.Text className="text-muted">
-                1 el de menor riesgo
+                {translate('minimo_riesgo', this.props.lang)}
               </Form.Text>
               <Form.Text className="text-muted">
-                10 el de mayor riesgo
+                {translate('maximo_riesgo', this.props.lang)}
               </Form.Text>
             </Form.Group>
 
             <Form.Group as={Col} md="3" controlId="formCuantia">
-              <Form.Label>Cuantía de la reclamación</Form.Label>
-              <Form.Control type="number" placeholder="Introduce cuantía" name="cuantiaReclamacion" value={cuantiaReclamacion} onChange={this.handleChangeField} />
+              <Form.Label>{translate('cuantia_reclamada', this.props.lang)}</Form.Label>
+              <Form.Control type="number" name="cuantiaReclamacion" value={cuantiaReclamacion} onChange={this.handleChangeField} />
             </Form.Group>
 
             <Form.Group as={Col} md="3" controlId="formCantidad">
-              <Form.Label>Cantidad a contribuir</Form.Label>
-              <Form.Control type="number" placeholder="Introduce cantidad" name="cantidadContribuir" value={cantidadContribuir} onChange={this.handleChangeField} />
+              <Form.Label>{translate('contribucion', this.props.lang)}</Form.Label>
+              <Form.Control type="number" name="cantidadContribuir" value={cantidadContribuir} onChange={this.handleChangeField} />
             </Form.Group>
 
             <Form.Group as={Col} md="3" controlId="formPorcentaje">
-              <Form.Label>Porcentaje a financiar</Form.Label>
+              <Form.Label>{translate('porcentaje_a_financiar', this.props.lang)}</Form.Label>
               <Form.Control type="number" placeholder="Introduce porcentaje" name="porcentajeFinanciar" min="0" max="100" value={porcentajeFinanciar} onChange={this.handleChangeField} />
             </Form.Group>
           </Form.Row>
 
           <Form.Row>
             <Form.Group as={Col} md="12" controlId="exampleForm.ControlTextarea1">
-              <Form.Label>Exposición del caso</Form.Label>
+              <Form.Label>{translate('exposicion_del_caso', this.props.lang)}</Form.Label>
               <Form.Control as="textarea" rows="8" name="exposicion" value={exposicion} onChange={this.handleChangeField} />
             </Form.Group>
           </Form.Row>
 
           <Form.Row>
             <Form.Group as={Col} md="12" controlId="exampleForm.ControlImagen">
-              <Form.Label>Url Imagen</Form.Label>
+              <Form.Label>{translate('url_imagen', this.props.lang)}</Form.Label>
               <Form.Control type="text" placeholder="Introduce una url a la imagen" name="imagen" value={imagen} onChange={this.handleChangeField} />
             </Form.Group>
           </Form.Row>
 
           <Button variant="primary" type="submit">
-            Crear
+            {translate('crear', this.props.lang)}
           </Button>
         </Form>
       </Container>
@@ -120,7 +121,9 @@ class FormAsunto extends Component {
 const mapStateToProps = (state) => {
   console.log(state);
   return {
-    ramas: state.ramasReducer
+    ramas: state.ramasReducer,
+    usuario: state.usuariosReducer.usuario,
+    lang: state.langReducer.selected.code
   }
 }
 
@@ -128,4 +131,4 @@ const mapDispatchToProps = {
   guardarAsunto
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormAsunto);
+export default connect(mapStateToProps, mapDispatchToProps)(withUser(FormAsunto));

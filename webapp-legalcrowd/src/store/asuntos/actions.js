@@ -1,5 +1,6 @@
 import { ADD_ASUNTO, INIT_ASUNTOS, UPDATE_ASUNTO } from './action-types';
 import axios from 'axios';
+import { addInversionDeUsuario } from '../usuarios/actions';
 
 const url = 'https://legalcrowd-b2b50.firebaseio.com/asuntos'
 
@@ -61,6 +62,17 @@ export function actualizarAsunto(asunto) {
   return (dispatch, getState) => {
     return axios.put(url + '/' + asunto.id + '.json', asunto)
       .then(response => {
+        const inversionUsuario = {
+          asunto: {
+            id: asunto.id,
+            nombre: asunto.nombre
+          },
+          cantidad: asunto.inversiones[asunto.inversiones.length-1].cantidad,
+          timestamp: new Date().toString()
+        }
+        return addInversionDeUsuario(inversionUsuario)(dispatch, getState);
+      })
+      .then(resp => {
         dispatch(updateAsunto(asunto));
       })
       .catch(error => {

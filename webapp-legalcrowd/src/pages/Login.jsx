@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import { connect } from 'react-redux';
 import { login } from '../store/usuarios/actions';
+import translate from '../utils/traducciones';
 
 class Login extends Component {
   constructor(props) {
@@ -40,16 +41,16 @@ class Login extends Component {
         <br />
         <Form onSubmit={this.handleSubmit}>
           <Form.Group as={Col} md="6" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" name="email" value={email} onChange={this.handleChangeField} />
+            <Form.Label>{translate('email', this.props.lang)}</Form.Label>
+            <Form.Control type="email" name="email" value={email} onChange={this.handleChangeField} />
           </Form.Group>
 
           <Form.Group as={Col} md="6" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={this.handleChangeField} />
+            <Form.Label>{translate('contraseña', this.props.lang)}</Form.Label>
+            <Form.Control type="password" name="password" value={password} onChange={this.handleChangeField} />
           </Form.Group>
-          <Button variant="link" as={Link} to="/registro">No tienes cuenta? Registrate</Button>
-          <Button variant="primary" type="submit">
+          <Button variant="light" as={Link} to="/registro">{translate('no_tienes_cuenta', this.props.lang)}</Button>
+          <Button variant="outline-light" type="submit">
             Login
           </Button>
         </Form>
@@ -58,8 +59,14 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    lang: state.langReducer.selected.code
+  }
+}
+
 const mapDispatchToProps = {
   login
 }
 
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

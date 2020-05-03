@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container'
 import AsuntoDetalle from './components/AsuntoDetalle';
 import FormExposicion from './components/FormExposicion';
 import ListaCasosPendientes from './components/ListaCasosPendientes';
+import UsuarioInversiones from './components/UsuarioInversiones';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { initAsuntos } from './store/asuntos/actions';
@@ -33,6 +34,7 @@ class Index extends Component {
             <Route path="/casos-por-revisar" component={ ListaCasosPendientes } />
             <Route path="/login" component={ Login } />
             <Route path="/registro" component={ Registro } />
+            <Route path="/usuario/:id/inversiones" component={ UsuarioInversiones } />
             <Redirect path="/" exact to="/destacados" />
           </Switch>
         </Container>

@@ -5,6 +5,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configStore from './store/configure-store';
 import './styles.css';
+import './init-firebase';
+
+
+
 
 const store = configStore();
 

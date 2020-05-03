@@ -1,5 +1,4 @@
 import * as ActionTypes from './action-types';
-// import initialState from './asuntos';
 
 const initialState = {
   asuntos: []
