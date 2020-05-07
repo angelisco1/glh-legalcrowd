@@ -45,7 +45,7 @@ class FormAsunto extends Component {
     const {nombre, ramaId, valRiesgo, cantidadContribuir, cuantiaReclamacion, porcentajeFinanciar, exposicion, imagen} = this.state;
     const ramasOptions = this.props.ramas.map(r => {
       return (
-        <option key={r.id} value={r.id}>{r.nombre}</option>
+        <option key={r.id} value={r.id}>{translate(r.nombre, this.props.lang)}</option>
       )
     })
     return (
