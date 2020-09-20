@@ -7,7 +7,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withUser } from './withUser';
-import { validarCaso, downloadFile } from '../store/casos-presentados/actions';
+import { validarCaso } from '../store/casos-presentados/actions';
 import translate from '../utils/traducciones';
 
 class ListaCasosPendientes extends Component {
@@ -63,7 +63,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   validarCaso,
-  downloadFile
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withUser(ListaCasosPendientes)));
