@@ -47,7 +47,7 @@ class Header extends Component {
       <Navbar style={{backgroundColor: 'black', borderBottom: '2px solid #0bffae', marginBottom: '2rem'}}>
         <Navbar.Brand className="mr-auto brand" as={Link} to="/">
           <img style={{width: "400px"}}
-            src="/images/dark-logo.png"
+            src="/images/new-logo-white.png"
             className="d-inline-block align-top"
             alt="Logo Legal Crowd"
           />
