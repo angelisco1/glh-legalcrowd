@@ -5,7 +5,7 @@ const initialState = {
     {id: 0, code: 'es', flag: '🇪🇸', text: '🇪🇸 Spanish'},
     {id: 1, code: 'en', flag: '🇬🇧', text: '🇬🇧 English'}
   ],
-  selected: {id: 0, code: 'es', flag: '🇪🇸'}
+  selected: {id: 1, code: 'en', flag: '🇬🇧'}
 }
 
 function switchLang(state, selectedLang) {
